@@ -76,20 +76,15 @@ var sassTask = function(options) {
 }
 
 var serverTask = function(options) {
-  var server = nodemon({
-    verbose: true,
+  nodemon({
     script: options.src,
     ext: 'html js',
+    ignore: ['./dist/**', 'node_modules/**'],
     env: {
       'NODE_ENV': options.env || 'development',
       'PORT': options.port || 8080
     }
-  })
-    .on('restart', function() {
-      console.log('restarted server!');
-    });
-
-  server();
+  });
 };
 
 gulp.task('default', function() {
