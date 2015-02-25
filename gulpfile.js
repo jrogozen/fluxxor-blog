@@ -11,7 +11,7 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   sass = require('gulp-sass'),
   cssmin = require('gulp-cssmin'),
-  livereload = require('gulp-livereload');
+  nodemon = require('gulp-nodemon');
 
 var path = {
   HTML: 'src/index.html',
@@ -39,7 +39,6 @@ var browserifyTask = function(options) {
       .pipe(source('bundle.js'))
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
-      .pipe(gulpif(options.development, livereload()))
       .pipe(notify(function() {
         console.log('App bundle built in ' + (Date.now() - start) + 'ms');
       }));
@@ -76,6 +75,23 @@ var sassTask = function(options) {
   }
 }
 
+var serverTask = function(options) {
+  var server = nodemon({
+    verbose: true,
+    script: options.src,
+    ext: 'html js',
+    env: {
+      'NODE_ENV': options.env || 'development',
+      'PORT': options.port || 8080
+    }
+  })
+    .on('restart', function() {
+      console.log('restarted server!');
+    });
+
+  server();
+};
+
 gulp.task('default', function() {
   browserifyTask({
     development: true,
@@ -87,6 +103,10 @@ gulp.task('default', function() {
     development: true,
     src: './src/sass/main.scss',
     dest: './dist/css'
+  });
+
+  serverTask({
+    src: './server.js'
   });
 });
 
