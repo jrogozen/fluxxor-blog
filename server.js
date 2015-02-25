@@ -15,9 +15,10 @@ app.get('/', function(req, res) {
 app.get('/api/posts', function(req, res) {
   utils.getAllPosts()
     .then(function(data) {
+      if(!data) throw {error: 'no posts found'}
       res.json(data);
     })
-    .catch(function(error) {
+    .fail(function(error) {
       res.json(error)
     })
     .done();
