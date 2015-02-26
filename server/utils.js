@@ -4,10 +4,12 @@ var fs = require('fs'),
   dir = __dirname + '/../data',
   _ = require('underscore');
 
+var posts = [];
+
 function filenameToDate(filename) {
   var date;
   var time = filename.replace(/[^\d+|_]/g, '');
-  var time = time.split('_');
+  time = time.split('_');
   
   if (time.length !== 3) {
     return false;
@@ -20,13 +22,58 @@ function filenameToDate(filename) {
   }
 }
 
-function getPost(slug) {
+function filenameToSlug(filename) {
+  var slug = filename.replace(/_/g, '/');
+  slug = slug.replace(/-/, '/');
+  slug = slug.replace(/.md/, '');
+  return slug;
+}
 
+function slugToFilename(slug) {
+  var filename = slug;
+
+  for (var i=0; i<2; i++) {
+    filename = filename.replace(/\//, '_');
+  }
+
+  filename = filename.replace(/\//, '-');
+  filename += '.md';
+  return filename;
+}
+
+function createPost(file, data) {
+  var post = {};
+
+  var date = filenameToDate(file);
+  date = new Date(date.year, date.month, date.day);
+
+  var post = {
+    date: date.getTime(),
+    content: marked(data),
+    slug: filenameToSlug(file)
+  };
+  
+  return post;
+}
+
+function getPost(slug) {
+  var deferred = q.defer(),
+    filename = slugToFilename(slug);
+
+
+  fs.readFile(dir + '/' + filename, 'utf-8', function(err, data) {
+    if(err) throw err;
+
+    var post = createPost(filename, data);
+
+    deferred.resolve(post);
+  })
+
+  return deferred.promise;
 }
 
 function getAllPosts() {
-  var posts = [],
-    deferred = q.defer();
+  var deferred = q.defer();
 
   fs.readdir(dir, function(err, files) {
     if(err) throw err;
@@ -38,13 +85,7 @@ function getAllPosts() {
       fs.readFile(dir + '/' + file, 'utf-8', function(err, data) {
         if(err) throw err;
 
-        var date = filenameToDate(file);
-        date = new Date(date.year, date.month, date.day);
-
-        var post = {
-          _id: posts.length,
-          date: date.getTime()
-        };
+        var post = createPost(file, data);
 
         posts.push(post);
 

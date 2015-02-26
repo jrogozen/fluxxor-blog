@@ -12,6 +12,20 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
+app.get('/api/posts/:year/:month/:day/:title', function(req, res) {
+  var slug = req.originalUrl.replace('/api/posts/', '');
+  
+  utils.getPost(slug)
+    .then(function(data) {
+      if(!data) throw {error: 'no post found'}
+      res.json(data);
+    })
+    .fail(function(error) {
+      res.json(error)
+    })
+    .done();
+});
+
 app.get('/api/posts', function(req, res) {
   utils.getAllPosts()
     .then(function(data) {
