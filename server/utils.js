@@ -6,6 +6,14 @@ var fs = require('fs'),
 
 var posts = [];
 
+/* 
+Refactor posts to an object. save each post to object
+with a key of the post slug.
+
+When retrieving a single post, get all posts, then select 
+the post with the matching key.
+*/
+
 function filenameToDate(filename) {
   var date;
   var time = filename.replace(/[^\d+|_]/g, '');
