@@ -4,7 +4,7 @@ var React = require('react'),
   Link = Router.Link,
   Fluxxor = require('fluxxor');
 
-var PostList = React.createClass({
+var ArchiveList = React.createClass({
   mixins: [
     Fluxxor.FluxMixin(React),
     Fluxxor.StoreWatchMixin('post')
@@ -40,4 +40,4 @@ var PostList = React.createClass({
   }
 });
 
-module.exports = PostList;
+module.exports = ArchiveList;

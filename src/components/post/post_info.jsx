@@ -4,7 +4,7 @@ var React = require('react'),
   Link = Router.Link,
   Fluxxor = require('fluxxor');
 
-var Post = React.createClass({
+var PostInfo = React.createClass({
   mixins: [
     Fluxxor.FluxMixin(React),
     Fluxxor.StoreWatchMixin('post'),
@@ -34,4 +34,4 @@ var Post = React.createClass({
   }
 });
 
-module.exports = Post;
+module.exports = PostInfo;

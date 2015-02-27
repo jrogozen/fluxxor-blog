@@ -28,7 +28,6 @@ var PostStore = Fluxxor.createStore({
   },
 
   getPost: function(params) {
-
     var slug = paramsToSlug(params.post);
     findOnePost(slug)
       .then(function(data) {
