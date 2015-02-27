@@ -3,7 +3,7 @@ var React = require('react'),
   Router = require('react-router'),
   RouteHandler = Router.RouteHandler;
 
-var PostInfo = require('./post_info.jsx');
+var Sidebar = require('../common/sidebar.jsx');
 
 var Post = React.createClass({
   mixins: [
@@ -13,7 +13,7 @@ var Post = React.createClass({
   render: function() {
     return (
       <div>
-        <PostInfo/>
+        <Sidebar/>
         <RouteHandler/>
       </div>
     );

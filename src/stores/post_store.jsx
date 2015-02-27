@@ -10,11 +10,12 @@ var PostStore = Fluxxor.createStore({
   initialize: function() {
     this.posts = [];
     this.post = {};
+    this.viewedPosts = [];
 
     this.bindActions(
-      actions.constants.POST.ADD_TO_HISTORY, this.handleAddPostToHistory,
       actions.constants.POST.LOAD_POSTS, this.getPosts,
-      actions.constants.POST.LOAD_POST, this.getPost
+      actions.constants.POST.LOAD_POST, this.getPost,
+      actions.constants.POST.LOAD_VIEWED_POSTS, this.getViewedPosts
     );
   },
 
@@ -32,13 +33,40 @@ var PostStore = Fluxxor.createStore({
     findOnePost(slug)
       .then(function(data) {
         this.post = data;
+
+        /* add post to history */
+        this.handleAddPostToHistory(this.post);
+
         this.emit('change');
       }.bind(this))
       .done();
   },
 
-  handleAddPostToHistory: function(payload) {
+  getViewedPosts: function() {
+    this.emit('change');
+    return this.viewedPosts;
+  },
 
+  handleAddPostToHistory: function(post) {
+    /* make sure posts are truncated to 5
+    check to make sure that this post isn't in the current list
+    append this post to the end */
+    
+    var unique = true;
+
+    while (this.viewedPosts.length > 5) {
+      this.viewedPosts.pop();
+    }
+
+    this.viewedPosts.forEach(function(p) {
+      if(p._id === post._id) {
+        unique = false;
+      }
+    });
+
+    if(unique) {
+      this.viewedPosts.push(post);
+    }
   }
 
 });
@@ -59,7 +87,6 @@ function findOnePost(slug) {
 
   request.get('/api/posts/' + slug, function(err, res) {
     if(err) throw err;
-    console.log(res.body);
     deferred.resolve(res.body);
   })
 
