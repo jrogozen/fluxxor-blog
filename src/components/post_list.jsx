@@ -32,7 +32,6 @@ var PostList = React.createClass({
   },
 
   renderPostLink: function(post, i) {
-    console.log(post);
     return (
       <li key={i}>
         <Link to="post" params={{year: post.date.year, month: post.date.month, day: post.date.day, title: post.title}}>{post.title}</Link>

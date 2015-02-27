@@ -7,7 +7,8 @@ var React = require('react'),
 var Post = React.createClass({
   mixins: [
     Fluxxor.FluxMixin(React),
-    Fluxxor.StoreWatchMixin('post')
+    Fluxxor.StoreWatchMixin('post'),
+    Router.State
   ],
 
   getStateFromFlux: function() {
@@ -17,8 +18,9 @@ var Post = React.createClass({
   },
 
   componentDidMount: function() {
-    /* how to get params? */
-    this.getFlux().actions.posts.loadPost();
+    var params = this.getParams();
+    console.log('params', params);
+    this.getFlux().actions.posts.loadPost(params);
   },
 
   render: function() {

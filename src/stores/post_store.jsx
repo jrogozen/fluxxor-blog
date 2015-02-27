@@ -27,12 +27,13 @@ var PostStore = Fluxxor.createStore({
       .done();
   },
 
-  getPost: function() {
-    findOnePost(post)
+  getPost: function(params) {
+    /* take params: day, month, year, title and conver to slug  to pass */
+    findOnePost()
       .then(function(data) {
         this.post = data;
         this.emit('change');
-      }, bind(this))
+      }.bind(this))
       .done();
   },
 
