@@ -37,6 +37,10 @@ function filenameToSlug(filename) {
   return slug;
 }
 
+function slugToTitle(slug) {
+  return slug.substr(slug.lastIndexOf('/') + 1, slug.length-3);
+}
+
 function slugToFilename(slug) {
   var filename = slug;
 
@@ -53,12 +57,20 @@ function createPost(file, data) {
   var post = {};
 
   var date = filenameToDate(file);
-  date = new Date(date.year, date.month, date.day);
+  time = new Date(date.year, date.month, date.day);
+
+  var slug = filenameToSlug(file);
 
   var post = {
-    date: date.getTime(),
+    _id: time.getTime(),
     content: marked(data),
-    slug: filenameToSlug(file)
+    slug: slug,
+    title: slugToTitle(slug),
+    date: {
+      year: date.year,
+      month: date.month,
+      day: date.day
+    }
   };
   
   return post;
@@ -81,6 +93,7 @@ function getPost(slug) {
 }
 
 function getAllPosts() {
+  posts = [];
   var deferred = q.defer();
 
   fs.readdir(dir, function(err, files) {
@@ -98,7 +111,7 @@ function getAllPosts() {
         posts.push(post);
 
         if (0 === --i) {
-          var sortedPosts = _.sortBy(posts, function(post) { return -post.date });
+          var sortedPosts = _.sortBy(posts, function(post) { return -post._id });
           deferred.resolve(sortedPosts);
         }
       });

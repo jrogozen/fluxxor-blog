@@ -4,14 +4,19 @@ var React = require('react'),
   DefaultRoute = Router.DefaultRoute;
 
 var EmptyView = require('./components/empty_view.jsx'),
-  Post = require('./components/post/post.jsx');
+  Post = require('./components/post.jsx'),
+  PostHistory = require('./components/post_history.jsx'),
+  PostList = require('./components/post_list.jsx');
+
 
 var routes = (
-  <Route handler={EmptyView} name="home" path="/">
-    <Route handler={EmptyView} path="/posts/:slug">
+  <Route name="app" path="/" handler={EmptyView}>
+    <Route handler={PostList}/>
+    <Route handler={PostHistory}/>
+
+    <Route path="/post/:year/:month/:day/:title" handler={EmptyView}>
+      <DefaultRoute handler={Post} name="post"/>
     </Route>
-    
-    <DefaultRoute handler={PostList} />
   </Route>
 );
 
