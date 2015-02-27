@@ -19,13 +19,17 @@ var Post = React.createClass({
 
   componentDidMount: function() {
     var params = this.getParams();
-    console.log('params', params);
     this.getFlux().actions.posts.loadPost(params);
   },
 
   render: function() {
+    var post = this.state.post;
     return (
-      <div/>
+      <div>
+        <h1>{post.title}</h1>
+        <div dangerouslySetInnerHTML={{__html: post.content}}>
+        </div>
+      </div>
     );
   }
 });

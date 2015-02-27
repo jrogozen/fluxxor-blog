@@ -28,8 +28,9 @@ var PostStore = Fluxxor.createStore({
   },
 
   getPost: function(params) {
-    /* take params: day, month, year, title and conver to slug  to pass */
-    findOnePost()
+
+    var slug = paramsToSlug(params.post);
+    findOnePost(slug)
       .then(function(data) {
         this.post = data;
         this.emit('change');
@@ -54,10 +55,20 @@ function findAllPosts() {
   return deferred.promise;
 }
 
-function findOnePost() {
+function findOnePost(slug) {
   var deferred = q.defer();
 
+  request.get('/api/posts/' + slug, function(err, res) {
+    if(err) throw err;
+    console.log(res.body);
+    deferred.resolve(res.body);
+  })
+
   return deferred.promise;
+}
+
+function paramsToSlug(params) {
+  return params.year + '/' + params.month + '/' + params.day + '/' + params.title;
 }
 
 PostStore.NOT_FOUND_TOKEN = NOT_FOUND_TOKEN;
