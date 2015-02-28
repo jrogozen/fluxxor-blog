@@ -22,6 +22,11 @@ var PostContent = React.createClass({
     this.getFlux().actions.posts.loadPost(params);
   },
 
+  componentWillReceiveProps: function() {
+    var params = this.getParams();
+    this.getFlux().actions.posts.loadPost(params);
+  },
+
   render: function() {
     var post = this.state.post;
     return (
