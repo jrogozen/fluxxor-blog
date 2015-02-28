@@ -21,8 +21,6 @@ var PostHistoryList = React.createClass({
   },
 
   render: function() {
-    console.log('rendering', this.state.viewedPosts);
-
     var viewedPosts = this.state.viewedPosts.map(function(post, i) {
       <li key={i}>{post}</li>
     });
@@ -40,7 +38,7 @@ var PostHistoryList = React.createClass({
   renderPostLink: function(post, i) {
     return (
       <li key={i}>
-        {post.title}
+        <Link to="post" params={{year: post.date.year, month: post.date.month, day: post.date.day, title: post.title}}>{post.title}</Link>
       </li>
     );
   }

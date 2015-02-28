@@ -20,6 +20,8 @@ var PostStore = Fluxxor.createStore({
   },
 
   getPosts: function() {
+    this.posts = [];
+
     findAllPosts()
       .then(function(data) {
         this.posts = data;
@@ -51,7 +53,7 @@ var PostStore = Fluxxor.createStore({
     /* make sure posts are truncated to 5
     check to make sure that this post isn't in the current list
     append this post to the end */
-    
+
     var unique = true;
 
     while (this.viewedPosts.length > 5) {

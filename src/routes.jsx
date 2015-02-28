@@ -13,8 +13,8 @@ var routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute handler={Archive}/>
 
-    <Route path="/post/:year/:month/:day/:title" handler={Post}>
-      <DefaultRoute handler={PostContent} name="post"/>
+    <Route name="post" path="/post/:year/:month/:day/:title" handler={Post}>
+      <DefaultRoute handler={PostContent} />
     </Route>
   </Route>
 );
