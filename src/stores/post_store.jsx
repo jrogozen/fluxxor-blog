@@ -4,6 +4,8 @@ var Fluxxor = require('fluxxor'),
 
 var actions = require('../actions.jsx');
 
+var cookies = require('../common/cookies.js');
+
 var NOT_FOUND_TOKEN = {};
 
 var PostStore = Fluxxor.createStore({
@@ -50,10 +52,6 @@ var PostStore = Fluxxor.createStore({
   },
 
   handleAddPostToHistory: function(post) {
-    /* make sure posts are truncated to 5
-    check to make sure that this post isn't in the current list
-    append this post to the end */
-
     var unique = true;
 
     while (this.viewedPosts.length > 5) {

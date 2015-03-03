@@ -22,7 +22,7 @@ var methods = {
       this.dispatch(c.POST.LOAD_VIEWED_POSTS, {
         post: post
       });
-    },
+    }
   }
 };
 

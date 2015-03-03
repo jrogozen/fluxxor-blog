@@ -18,7 +18,7 @@ gulp
 
 ## todo
 
-- save viewed posts to cache
+<!-- - save viewed posts to cache -->
 - 'add to queue' button in archive list (or favorites?)
 - read your queue page (or favorites?)
 - disqus comments

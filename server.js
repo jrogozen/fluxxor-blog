@@ -4,13 +4,21 @@ var express = require('express'),
   utils = require('./server/utils'),
   _ = require('underscore');
 
+// app.use(express.static('./dist'));
+
+app.use(function(req, res, next) {
+  if (path.extname(req.path).length > 0) {
+    next();
+  }
+  else {
+    req.url = '/index.html';
+    next();
+  }
+});
+
 app.use(express.static('./dist'));
 
 var port = process.env.PORT || 8080;
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/index.html'));
-});
 
 app.get('/api/posts/:year/:month/:day/:title', function(req, res) {
   var slug = req.originalUrl.replace('/api/posts/', '');

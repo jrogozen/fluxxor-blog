@@ -4,6 +4,8 @@ var React = require('react'),
   Link = Router.Link,
   Fluxxor = require('fluxxor');
 
+var Comment = require('../comment/comment.jsx');
+
 var PostContent = React.createClass({
   mixins: [
     Fluxxor.FluxMixin(React),
@@ -29,13 +31,22 @@ var PostContent = React.createClass({
 
   render: function() {
     var post = this.state.post;
-    return (
-      <div>
-        <h1>{post.title}</h1>
-        <div dangerouslySetInnerHTML={{__html: post.content}}>
+    if(this.state.post._id) {
+      return (
+        <div>
+          <h1>{post.title}</h1>
+          <div dangerouslySetInnerHTML={{__html: post.content}}></div>
+          <Comment post={post} id={post._id} title={post.title} shortname="fluxxorblog" url={post.slug}/>
         </div>
-      </div>
-    );
+      )
+    } else {
+      return (
+        <div>
+          <h1>{post.title}</h1>
+          <div dangerouslySetInnerHTML={{__html: post.content}}></div>
+        </div>
+      )
+    }
   }
 });
 
