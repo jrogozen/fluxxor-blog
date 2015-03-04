@@ -12,13 +12,14 @@ function fetchPosts() {
   return deferred.promise;
 }
 
-function fetchPost(params) {
-  var slug = paramsToSlug(params.post),
-    deferred = q.defer();
+function fetchPost(slug) {
+  deferred = q.defer();
 
   request.get('/api/posts/' + slug, function(err, res) {
     if(err) throw err;
-    deferred.resolve(res.body);
+    setTimeout(function(){
+deferred.resolve(res.body);
+    },3000);
   })
 
   return deferred.promise;

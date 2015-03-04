@@ -35,17 +35,21 @@ var PostStore = Fluxxor.createStore({
   },
 
   handleLoadPostsSuccess: function(data) {
-    console.log('success triggered', data)
+    console.log('success triggered', data);
     this.posts = data.posts;
     this.emit('change')
   },
 
   handleLoadPostStart: function() {
-
+    console.log('loading!!');
+    this.post = LOADING_TOKEN;
+    this.emit('change');
   },
 
-  handleLoadPostSuccess: function() {
-
+  handleLoadPostSuccess: function(data) {
+    console.log('success triggered', data);
+    this.post = data.post;
+    this.emit('change');
   },
 
   getPosts: function() {
@@ -118,10 +122,6 @@ function findOnePost(slug) {
   })
 
   return deferred.promise;
-}
-
-function paramsToSlug(params) {
-  return params.year + '/' + params.month + '/' + params.day + '/' + params.title;
 }
 
 PostStore.NOT_FOUND_TOKEN = NOT_FOUND_TOKEN;

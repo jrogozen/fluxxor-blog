@@ -30,6 +30,10 @@ function filenameToDate(filename) {
   }
 }
 
+function paramsToSlug(params) {
+  return params.year + '/' + params.month + '/' + params.day + '/' + params.title;
+}
+
 function filenameToSlug(filename) {
   var slug = filename.replace(/_/g, '/');
   slug = slug.replace(/-/, '/');
@@ -123,5 +127,6 @@ function getAllPosts() {
 
 module.exports = {
   getPost: getPost,
-  getAllPosts: getAllPosts
+  getAllPosts: getAllPosts,
+  paramsToSlug: paramsToSlug
 }

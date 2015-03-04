@@ -2,7 +2,10 @@ var React = require('react'),
   Router = require('react-router'),
   RouteHandler = Router.RouteHandler,
   Link = Router.Link,
-  Fluxxor = require('fluxxor');
+  Fluxxor = require('fluxxor'),
+  Utils = require('../../../server/utils.js');
+
+var LOADING_TOKEN = "loading";
 
 var Comment = require('../comment/comment.jsx');
 
@@ -21,23 +24,22 @@ var PostContent = React.createClass({
 
   componentDidMount: function() {
     var params = this.getParams();
-    this.getFlux().actions.posts.loadPost(params);
+    var slug = Utils.paramsToSlug(params);
+    this.getFlux().actions.posts.loadPost(slug);
   },
 
   componentWillReceiveProps: function() {
     var params = this.getParams();
-    this.getFlux().actions.posts.loadPost(params);
+    var slug = Utils.paramsToSlug(params);
+    this.getFlux().actions.posts.loadPost(slug);
   },
 
   render: function() {
     var post = this.state.post;
-    if(this.state.post._id) {
+
+    if(this.state.post === LOADING_TOKEN) {
       return (
-        <div>
-          <h1>{post.title}</h1>
-          <div dangerouslySetInnerHTML={{__html: post.content}}></div>
-          <Comment post={post} id={post._id} title={post.title} shortname="fluxxorblog" url={post.slug}/>
-        </div>
+        <h1>Loading...</h1>
       )
     } else {
       return (
