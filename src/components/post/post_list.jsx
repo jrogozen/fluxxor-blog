@@ -4,15 +4,19 @@ var React = require('react'),
   Link = Router.Link,
   Fluxxor = require('fluxxor');
 
-var ArchiveList = React.createClass({
+var LOADING_TOKEN = "loading";
+
+var PostList = React.createClass({
   mixins: [
     Fluxxor.FluxMixin(React),
     Fluxxor.StoreWatchMixin('post')
   ],
 
   getStateFromFlux: function() {
+    var postStore = this.getFlux().store('post');
+
     return {
-      posts: this.getFlux().store('post').posts
+      posts: postStore.posts
     }
   },
 
@@ -21,23 +25,32 @@ var ArchiveList = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h1>Archive</h1>
-        <ul>
-          {this.state.posts.map(this.renderPostLink)}
-        </ul>
-      </div>
-    )
+    if(this.state.posts === LOADING_TOKEN) {
+      return (
+        <div>
+          <h1>Post List</h1>
+          Loading...
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <h1>Post List</h1>
+          <ul>
+            {this.state.posts.map(this.renderPosts)}
+          </ul>
+        </div>
+      )
+    }
   },
 
-  renderPostLink: function(post, i) {
+  renderPosts: function(post, i) {
     return (
       <li key={i}>
         <Link to="post" params={{year: post.date.year, month: post.date.month, day: post.date.day, title: post.title}}>{post.title}</Link>
       </li>
-    );
+    )
   }
 });
 
-module.exports = ArchiveList;
+module.exports = PostList;

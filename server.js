@@ -6,15 +6,15 @@ var express = require('express'),
 
 // app.use(express.static('./dist'));
 
-app.use(function(req, res, next) {
-  if (path.extname(req.path).length > 0) {
-    next();
-  }
-  else {
-    req.url = '/index.html';
-    next();
-  }
-});
+// app.use(function(req, res, next) {
+//   if (path.extname(req.path).length > 0) {
+//     next();
+//   }
+//   else {
+//     req.url = '/index.html';
+//     next();
+//   }
+// });
 
 app.use(express.static('./dist'));
 

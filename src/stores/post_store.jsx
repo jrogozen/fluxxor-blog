@@ -8,6 +8,8 @@ var cookies = require('../common/cookies.js');
 
 var NOT_FOUND_TOKEN = {};
 
+var LOADING_TOKEN = "loading";
+
 var PostStore = Fluxxor.createStore({
   initialize: function() {
     this.posts = [];
@@ -15,10 +17,35 @@ var PostStore = Fluxxor.createStore({
     this.viewedPosts = [];
 
     this.bindActions(
+      actions.constants.POST.LOAD_POSTS_START, this.handleLoadPostsStart,
+      actions.constants.POST.LOAD_POSTS_SUCCESS, this.handleLoadPostsSuccess,
+
+      actions.constants.POST.LOAD_POST_START, this.handleLoadPostStart,
+      actions.constants.POST.LOAD_POST_SUCCESS, this.handleLoadPostSuccess,
+
       actions.constants.POST.LOAD_POSTS, this.getPosts,
       actions.constants.POST.LOAD_POST, this.getPost,
       actions.constants.POST.LOAD_VIEWED_POSTS, this.getViewedPosts
     );
+  },
+
+  handleLoadPostsStart: function() {
+    this.posts = LOADING_TOKEN;
+    this.emit('change');
+  },
+
+  handleLoadPostsSuccess: function(data) {
+    console.log('success triggered', data)
+    this.posts = data.posts;
+    this.emit('change')
+  },
+
+  handleLoadPostStart: function() {
+
+  },
+
+  handleLoadPostSuccess: function() {
+
   },
 
   getPosts: function() {
