@@ -3,12 +3,10 @@ var React = require('react'),
   Router = require('react-router'),
   Link = Router.Link;
 
-var PostHistory = require('../post/post_history_list.jsx');
-
 var Sidebar = React.createClass({
   render: function() {
     return (
-      <PostHistory/>
+      <div/>
     );
   }
 });
